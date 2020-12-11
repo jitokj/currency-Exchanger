@@ -30,7 +30,7 @@ const Header = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Currency Exchanger
+            Currency Converter
           </Typography>
         </Toolbar>
       </AppBar>

@@ -1,0 +1,9 @@
+.app {
+  height: 100vh;
+}
+
+.app__converter {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
