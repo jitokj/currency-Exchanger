@@ -1,69 +1,78 @@
 import React, { useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import InputLabel from '@material-ui/core/InputLabel';
+import "./Selector.css";
+
+
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
+import { TextField } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  margin: {
-    margin: theme.spacing(1),
-  }
-}));
+
+
 
 const Selector = () => {
-    const classes = useStyles();
-  const [values, setValues] = React.useState("");
-  const [country,setCountry] = React.useState("");
+    
+  const [country, setCountry] = React.useState("Country");
+  const [countries,setCountries] = React.useState([]);
 
   useEffect(()=>{
+    
+    let test = [];
       fetch("https://free.currconv.com/api/v7/countries?apiKey=901278837b02f6df6c61")
       .then(response=> {
-        // The response is a Response instance.
-        // You parse the data into a useable format using `.json()`
         return response.json();
       }).then(data=> {
-        // `data` is the parsed version of the JSON returned from the above endpoint.
-        console.log(data) })
+       
+      for (const property in data.results){
+
+        test.push(data.results[property]);
+      }
+      setCountries(test);
+      })
         .catch(e=>console.log(e));
+       
+       
   },[]);
 
-  const handleChange = (event) => {
-    setCountry(event.target.value);
-  };
-  const handleChangeAmount = (event) => {
-    setValues(event.target.value);
+   const onCountryChange = (e)=>{
+     e.preventDefault();
+     const selectedCountry = e.target.value;
+     setCountry(selectedCountry);
+   }
+
   
-  };
+
+
 
     return (
         <div className="selector">
-          <FormControl className={classes.margin} variant="outlined">
-          <InputLabel htmlFor="amount">Amount</InputLabel>
-          <OutlinedInput
-            value={values}
-            onChange={handleChangeAmount}
-            labelWidth={60}
-          />
-        </FormControl>
-         <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="selector__label">Countries</InputLabel>
-        <Select
-          labelId="selector-label"
-          value={country}
-          onChange={handleChange}
-          label="Countries"
-        >
-          <MenuItem value={"India"}>India</MenuItem>
-          <MenuItem value={"USA"}>USA</MenuItem>
-          <MenuItem value={"UK"}>UK</MenuItem>
-        </Select>
-      </FormControl>
+        <form className="selector__form"  autoComplete="off"  >
+        <TextField color="primary" className="selector__form__textField" type="number" variant="outlined" label="amount" required />
+        </form>
+        <FormControl className="selector__formControl">
+        <Select variant="outlined" value={country} onChange={onCountryChange}>
+       <MenuItem value="Country">Country</MenuItem>
+       {
+         countries.map((country)=>(
+          
+          <MenuItem key={country.id}  value={country.name}>{country.name}</MenuItem>
+        
+         ))
+       }
+     </Select>
+     </FormControl>
+     <FormControl className="selector__formControl">
+        <Select variant="outlined" value={country} onChange={onCountryChange}>
+       <MenuItem value="Country">Country</MenuItem>
+       {
+         countries.map((country)=>(
+          
+          <MenuItem key={country.id}  value={country.name}>{country.name}</MenuItem>
+        
+         ))
+       }
+     </Select>
+     </FormControl>
         </div>
     );
 };
