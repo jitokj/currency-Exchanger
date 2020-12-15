@@ -1,4 +1,27 @@
 .selector {
   display: flex;
   justify-content: space-around;
+  margin: 3px;
+}
+
+.selector__form {
+  padding-right: 4px;
+}
+
+.MuiOutlinedInput-root {
+  margin-right: 4px;
+}
+
+.selector__arrow {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.selector__button {
+  margin-top: 5px;
+}
+
+.selector__form__textField {
+  margin-right: 5px;
 }

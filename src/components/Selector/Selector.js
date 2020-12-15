@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react';
 import "./Selector.css";
 
-
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { TextField } from '@material-ui/core';
+import { Button, CardActions, TextField } from '@material-ui/core';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+
 
 
 
 
 const Selector = () => {
     
-  const [country, setCountry] = React.useState("Country");
+  const [fromCountry, setFromCountry] = React.useState("Country");
+  const [toCountry, setToCountry] = React.useState("Country");
   const [countries,setCountries] = React.useState([]);
-
+  const [converted, setConverted] = React.useState("");
+  const [amount,setAmount] = React.useState(0);
   useEffect(()=>{
     
     let test = [];
@@ -27,6 +30,7 @@ const Selector = () => {
 
         test.push(data.results[property]);
       }
+      
       setCountries(test);
       })
         .catch(e=>console.log(e));
@@ -34,46 +38,94 @@ const Selector = () => {
        
   },[]);
 
-   const onCountryChange = (e)=>{
+   const onFromCountryChange = (e)=>{
      e.preventDefault();
      const selectedCountry = e.target.value;
-     setCountry(selectedCountry);
+     setFromCountry(selectedCountry);
    }
 
+   const onToCountryChange = (e)=>{
+    e.preventDefault();
+    const selectedCountry = e.target.value;
+    setToCountry(selectedCountry);
+  }
+
+  const onAmountChange = (e)=>{
+    const selectedamount = e.target.value;
+    const value = selectedamount.replace(/[^0-9]/g, '');
+   setAmount(value);
+    
+   
+  }
+
+   const onConvertHandler = ()=>{
+   fetch(`https://free.currconv.com/api/v7/convert?q=${fromCountry}_${toCountry}&compact=ultra&apiKey=901278837b02f6df6c61`)
+        .then((result)=>{
+          return result.json();
+        })
+        .then((result)=>{
+          console.log(result[`${fromCountry}_${toCountry}`]);
+          let conversionRate = result[`${fromCountry}_${toCountry}`];
+          let convertedValue = conversionRate*amount;
+          setConverted(convertedValue);
+        })
+        .catch(e=>{
+          console.log(e);
+        })
+    
+   }
   
 
 
 
     return (
+      <>
         <div className="selector">
         <form className="selector__form"  autoComplete="off"  >
-        <TextField color="primary" className="selector__form__textField" type="number" variant="outlined" label="amount" required />
+        <TextField value={amount}
+         onChange={onAmountChange} color="primary"
+          className="selector__form__textField" type="number"
+           variant="outlined" label="amount"
+            required error={amount < 0}
+             helperText={ amount < 0 ? 'Min. 0' : '' }
+             inputProps={{
+            pattern: "[0-9]*"}} />
         </form>
         <FormControl className="selector__formControl">
-        <Select variant="outlined" value={country} onChange={onCountryChange}>
+        <Select variant="outlined" value={fromCountry} onChange={onFromCountryChange}>
        <MenuItem value="Country">Country</MenuItem>
        {
          countries.map((country)=>(
           
-          <MenuItem key={country.id}  value={country.name}>{country.name}</MenuItem>
+          <MenuItem key={country.id}  value={country.currencyId}>{country.currencyId} {country.currencyName}</MenuItem>
         
          ))
        }
      </Select>
      </FormControl>
      <FormControl className="selector__formControl">
-        <Select variant="outlined" value={country} onChange={onCountryChange}>
+        <Select variant="outlined" value={toCountry} onChange={onToCountryChange}>
        <MenuItem value="Country">Country</MenuItem>
        {
          countries.map((country)=>(
           
-          <MenuItem key={country.id}  value={country.name}>{country.name}</MenuItem>
+          <MenuItem key={country.id}  value={country.currencyId}>{country.currencyId} {country.currencyName}</MenuItem>
         
          ))
        }
      </Select>
      </FormControl>
+     <div className="selector__arrow">
+     <ArrowRightAltIcon />
+     </div>
+     <form noValidate autoComplete="off">
+      <TextField value={converted} variant="filled" />
+      </form>
         </div>
+        <CardActions className="selector__button">
+        <Button onClick={onConvertHandler} size="small">Convert</Button>
+      </CardActions>
+        </>
     );
 };
 
