@@ -6,6 +6,7 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import { Button, CardActions, TextField } from '@material-ui/core';
 import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
+import { useStateValue } from '../../StateProvider';
 
 
 
@@ -13,8 +14,11 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 
 const Selector = () => {
     
-  const [fromCountry, setFromCountry] = React.useState("Country");
-  const [toCountry, setToCountry] = React.useState("Country");
+  // const [fromCountry, setFromCountry] = React.useState("Country");
+  // const [toCountry, setToCountry] = React.useState("Country");
+
+  const [{fromCountry,toCountry},dispatch] = useStateValue();
+
   const [countries,setCountries] = React.useState([]);
   const [converted, setConverted] = React.useState("");
   const [amount,setAmount] = React.useState(0);
@@ -41,13 +45,24 @@ const Selector = () => {
    const onFromCountryChange = (e)=>{
      e.preventDefault();
      const selectedCountry = e.target.value;
-     setFromCountry(selectedCountry);
+    //  setFromCountry(selectedCountry);
+     dispatch({
+      type: "FROM_COUNTRY",
+      fromCountry:selectedCountry
+  });
+    
    }
 
    const onToCountryChange = (e)=>{
     e.preventDefault();
     const selectedCountry = e.target.value;
-    setToCountry(selectedCountry);
+    // setToCountry(selectedCountry);
+    dispatch({
+      type: "TO_COUNTRY",
+      toCountry:selectedCountry
+    
+  });
+    
   }
 
   const onAmountChange = (e)=>{

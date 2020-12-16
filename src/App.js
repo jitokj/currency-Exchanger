@@ -1,6 +1,7 @@
 import './App.css';
 import Converter from './components/Converter/Converter';
 import Header from './components/Header/Header';
+import LineChart from './components/LineChart/LineChart';
 
 function App() {
   return (
@@ -14,6 +15,9 @@ function App() {
   
      {/* currency converter Api and coinlayer api */}
      {/* BarChart */}
+     <div className="graph">
+     <LineChart />
+     </div>
     </div>
   );
 }

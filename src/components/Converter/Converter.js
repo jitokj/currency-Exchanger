@@ -9,7 +9,7 @@ import Selector from '../Selector/Selector';
 
 const Converter = () => {
 
-  
+
 
    
     return (
@@ -19,7 +19,7 @@ const Converter = () => {
         <Typography color="textPrimary" gutterBottom>
           Currency Converter
         </Typography>
-         <Selector />
+         <Selector/>
      
       </CardContent>
      </Card>

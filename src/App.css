@@ -7,3 +7,8 @@
   justify-content: center;
   margin-top: 4px;
 }
+
+.graph {
+  height: 500px;
+  width: 500px;
+}
