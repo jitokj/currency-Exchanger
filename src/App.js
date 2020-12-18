@@ -15,7 +15,7 @@ function App() {
   
      {/* currency converter Api and coinlayer api */}
      {/* BarChart */}
-     <div className="graph">
+     <div className="app__graph">
      <LineChart />
      </div>
     </div>

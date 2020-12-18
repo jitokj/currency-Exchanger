@@ -1,11 +1,12 @@
 export const initialState = {
-    fromCountry: "",
-    toCountry: ""
+    fromCountry: "Select Country",
+    toCountry: "Select Country",
+    chart:false
 };
 
 
 const reducer = (state,action)=>{ 
-   console.log("action",action);
+   
     
     switch(action.type) {
         case "FROM_COUNTRY":
@@ -18,6 +19,11 @@ const reducer = (state,action)=>{
                     ...state,
                     toCountry: action.toCountry
                 };
+        case "SHOW_CHART":
+            return {
+                ...state,
+                chart: action.chart
+            }
         default:
                 return state;
         }

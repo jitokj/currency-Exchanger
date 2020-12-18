@@ -79,7 +79,10 @@ const Selector = () => {
           return result.json();
         })
         .then((result)=>{
-          console.log(result[`${fromCountry}_${toCountry}`]);
+          dispatch({
+            type: "SHOW_CHART",
+            chart:true
+                  });
           let conversionRate = result[`${fromCountry}_${toCountry}`];
           let convertedValue = conversionRate*amount;
           setConverted(convertedValue);
@@ -108,7 +111,7 @@ const Selector = () => {
         </form>
         <FormControl className="selector__formControl">
         <Select variant="outlined" value={fromCountry} onChange={onFromCountryChange}>
-       <MenuItem value="Country">Country</MenuItem>
+       <MenuItem value="Select Country">Select Country</MenuItem>
        {
          countries.map((country)=>(
           
@@ -120,7 +123,7 @@ const Selector = () => {
      </FormControl>
      <FormControl className="selector__formControl">
         <Select variant="outlined" value={toCountry} onChange={onToCountryChange}>
-       <MenuItem value="Country">Country</MenuItem>
+       <MenuItem value="Select Country">Select Country</MenuItem>
        {
          countries.map((country)=>(
           
